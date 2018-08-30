@@ -272,19 +272,19 @@ generico = [(
 
 s.listen(1)
 conn, addr = s.accept()
-conn.send("Que estilo de lero-lero voce quer?\n1 - Politico\n2 - Generico\n->".encode('utf-8'))
-tipo = int(conn.recv(1))
+conn.send("Que estilo de lero-lero voce quer?\n1 - Politico\n2 - Generico\n-> ".encode('utf-8'))
+tipo = int(conn.recv(1024))
 while tipo < 1 or tipo > 2:
-    conn.send("Use um numero valido!\n->".encode('utf-8'))
-    tipo = int(conn,recv(1))
+    conn.send("Use um numero valido!\n-> ".encode('utf-8'))
+    tipo = int(conn.recv(1024))
 if tipo == 1:
     base = politico
 elif base == 2:
     base = generico
 conn.send("Quantos paragrafos o seu discurso precisa?\n->".encode('utf-8'))
-tamanho = int(conn.recv(1))
+tamanho = int(conn.recv(1024))
 print(tamanho)
-paragrafo = ""
+discurso = ""
 for paragrafo in range(tamanho):
     paragrafo = "    "
     for frase in range(randint(4,7)):
@@ -292,3 +292,4 @@ for paragrafo in range(tamanho):
     discurso += paragrafo+'\n'
 
 conn.send(discurso.encode('utf-8'))
+s.close()
