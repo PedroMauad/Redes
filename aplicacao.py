@@ -6,6 +6,63 @@ from random import randint
 s = socket(AF_INET,SOCK_STREAM)
 s.bind(('localhost',1345))
 
+coxinha = [
+    ('A miséria ',
+    'A inflação ',
+    'O Golpe de 1964 ',
+    'A violência ',
+    'A crise ',
+    'O crime ',
+    'O nazismo ',
+    'O Bolsa Família ',
+    'O problema da educação ',
+    'A corrupção '),
+
+    ('é uma invenção ',
+    'é uma estratégia ',
+    'é uma manobra ',
+    'é um complô ',
+    'é culpa ',
+    'é uma criação ',
+    'é uma conspiração ',
+    'é uma forma orquestrada ',
+    'é a doutrinação ideológica ',
+    'é uma articulação '),
+
+    ('dos petralhas ',
+    'do comunismo ',
+    'dos esquerdopatas ',
+    'da esquerda festiva ',
+    'do socialismo ',
+    'do Estado ',
+    'da ditadura gay ',
+    'da "esquerda caviar" ',
+    'dos vândalos ',
+    'das feminazis '),
+
+    ('para deslegitimar ',
+    'para vandalizar ',
+    'para demoralizar ',
+    'para destruir ',
+    'para regular ',
+    'para ameaçar ',
+    'para superar ',
+    'para roubar ',
+    'para aterrorizar ',
+    'para transgredir '),
+
+    ('a economia!\n',
+    'o livre mercado!\n',
+    'a classe média!\n',
+    'a propriedade privada!\n',
+    'a nação!\n',
+    'o progresso!\n',
+    'a família!\n',
+    'a democracia!\n',
+    'a liberdade!\n',
+    'os bons costumes!\n')
+]
+
 politico = [(
 			"Povo, ",
 			"Por outro lado, ",
@@ -272,14 +329,16 @@ generico = [(
 
 s.listen(1)
 conn, addr = s.accept()
-conn.send("Que estilo de lero-lero voce quer?\n1 - Politico\n2 - Generico\n-> ".encode('utf-8'))
+conn.send("Que estilo de lero-lero voce quer?\n1 - Politico\n2 - Coxinha\n3 - Generico\n-> ".encode('utf-8'))
 tipo = int(conn.recv(1024))
-while tipo < 1 or tipo > 2:
+while tipo < 1 or tipo > 3:
     conn.send("Use um numero valido!\n-> ".encode('utf-8'))
     tipo = int(conn.recv(1024))
 if tipo == 1:
     base = politico
-elif base == 2:
+elif tipo == 2:
+    base = coxinha
+elif tipo == 3:
     base = generico
 conn.send("Quantos paragrafos o seu discurso precisa?\n->".encode('utf-8'))
 tamanho = int(conn.recv(1024))
@@ -288,7 +347,8 @@ discurso = ""
 for paragrafo in range(tamanho):
     paragrafo = "    "
     for frase in range(randint(4,7)):
-        paragrafo += base[0][randint(0,len(base[0])-1)]+base[1][randint(0,len(base[1])-1)]+ base[2][randint(0,len(base[2])-1)]+ base[3][randint(0,len(base[3])-1)]
+        for i in range(len(base)):
+            paragrafo += base[i][randint(0,len(base[i])-1)]
     discurso += paragrafo+'\n'
 
 conn.send(discurso.encode('utf-8'))
